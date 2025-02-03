@@ -51,7 +51,7 @@ function drawTable(x, y) {
 
 }
 
-function drawPlateofSpagetti(x, y) {
+function drawPlateofSpaghetti(x, y) {
     // Draw the plate
     fill(plateColor);
     ellipse(x, y, 100, 20);
@@ -107,7 +107,7 @@ function draw()
     // table top
     fill(tableTopColor);
     // plate of spaghetti
-    drawPlateofSpagetti(x, 350);
+    drawPlateofSpaghetti(x, 350);
     // randomly place the cup of water
     drawCupofWater(cupOfWaterX, 320);
 
