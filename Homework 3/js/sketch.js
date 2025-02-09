@@ -9,6 +9,7 @@ let cup;
 let water;
 var x = 400;
 var cupOfWaterX;
+let napkinX;
 let frameCounter = 0; // Counter to control movement timing
 var newFont;
 var timerText = 0;
@@ -54,6 +55,10 @@ function setup()
     do {
         cupOfWaterX = random(100, 700);
     } while (abs(cupOfWaterX - x) < 100); // Ensure cup is at least 100 pixels away from the plate
+    napkinX = random(500, 700); // Napkin starts on the right side
+
+
+    setInterval(changeSpeed, 2000);
 }
 
 
@@ -107,6 +112,11 @@ function drawCupofWater(x, y) {
 }
 
 
+function changeSpeed() {
+    // Randomly adjust the speed of the water cup and napkin
+    waterSpeed = random(1, 4); // Random speed between 1 and 4
+    napkinSpeed = random(0.5, 3); // Random speed between 0.5 and 3
+}
 
 function draw()
 {
@@ -165,4 +175,12 @@ function draw()
             x = 700;
         }
     }
+
+    // Move napkin
+    napkinX += napkinSpeed;
+    if (napkinX > 700 || napkinX < 500) {
+        napkinSpeed *= -1; // Reverse direction if out of bounds
+    }
+    // Draw napkin
+    image(napkinImg, napkinX, 380, 50, 50); // Adjust size and position
 }
