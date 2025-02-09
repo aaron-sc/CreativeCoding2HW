@@ -93,21 +93,7 @@ function drawPlateofSpaghetti(x, y) {
     ellipse(x + 10, y, 10, 10);
 
 
-    // CHATGPT helped with the following the make the fork visible!
-    // Add fork shadow
-    push();
-    translate(x + 20, y - 30); // Shadow position
-    rotate(-PI / 6); // Same rotation as the fork
-    fill(0, 50); // Semi-transparent black
-    rect(-15, -40, 30, 80); // Shadow dimensions
-    pop();
-
-    // Draw the fork
-    push();
-    translate(x + 20, y - 35); // Adjust fork position
-    rotate(-PI / 6); // Tilt the fork
-    image(forkImg, -15, -40, 30, 80); // Fork image dimensions
-    pop();
+    image(forkImg, x + 60, y + 25, 40, 100);
 }
 
 function drawCupofWater(x, y) {
