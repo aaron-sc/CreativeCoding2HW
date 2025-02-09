@@ -13,8 +13,8 @@ let frameCounter = 0; // Counter to control movement timing
 var newFont;
 var timerText = 0;
 var forkImg;
-var myImage2;
-var myImage3;
+var napkinImg;
+var treeImg;
 
 // Set up colors for the shapes
 let tableLegColor;
@@ -32,6 +32,8 @@ function preload()
     // preload the images and the font here from
     newFont = loadFont('fonts/Italiana-Regular.ttf');
     forkImg = loadImage('images/fork.png');
+    napkinImg = loadImage('images/napkin.png');
+    treeImg = loadImage('images/tree.png');
 }
 
 function setup()
@@ -66,6 +68,8 @@ function drawTable(x, y) {
     // Draw the table top
     fill(tableTopColor);
     rect(x, y - 50, 700, 50);
+
+    image(napkinImg, x + 200, y - 30, 50, 50);
 
 }
 
@@ -110,6 +114,8 @@ function drawCupofWater(x, y) {
 function draw()
 {
     background(150);
+
+    image(treeImg, 250, 50, 300, 300);
     // upper border
     noStroke();
     fill(0,100,255);
