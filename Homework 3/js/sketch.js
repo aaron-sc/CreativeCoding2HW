@@ -12,8 +12,9 @@ var cupOfWaterX;
 let frameCounter = 0; // Counter to control movement timing
 var newFont;
 var timerText = 0;
-var myImage;
-
+var forkImg;
+var myImage2;
+var myImage3;
 
 // Set up colors for the shapes
 let tableLegColor;
@@ -30,7 +31,7 @@ function preload()
 {
     // preload the images and the font here from
     newFont = loadFont('fonts/Italiana-Regular.ttf');
-    myImage = loadImage('images/provar.png');
+    forkImg = loadImage('images/fork.png');
 }
 
 function setup()
@@ -86,6 +87,12 @@ function drawPlateofSpaghetti(x, y) {
     ellipse(x, y, 10, 10);
     ellipse(x - 10, y, 10, 10);
     ellipse(x + 10, y, 10, 10);
+
+    push();
+    translate(x + 20, y - 25); // Adjust to position it slightly above the plate
+    rotate(-PI / 6); // Tilt the fork at a slight angle
+    image(forkImg, -15, -40, 30, 80); // Adjust size and position
+    pop();
 }
 
 function drawCupofWater(x, y) {
