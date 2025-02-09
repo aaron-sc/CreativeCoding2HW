@@ -1,5 +1,5 @@
 // Set up variables for the shapes
-let tableLeg1, tableLeg2
+let tableLeg1, tableLeg2;
 let tableTop;
 let plate;
 let spaghetti;
@@ -16,6 +16,8 @@ var timerText = 0;
 var forkImg;
 var napkinImg;
 var treeImg;
+let waterSpeed = 2; // Initial speed of water cup
+let napkinSpeed = 1; // Initial speed of napkin
 
 // Set up colors for the shapes
 let tableLegColor;
@@ -27,19 +29,16 @@ let sauceColor;
 let cupColor;
 let waterColor;
 
-
-function preload()
-{
-    // preload the images and the font here from
+function preload() {
+    // Preload the images and the font
     newFont = loadFont('fonts/Italiana-Regular.ttf');
     forkImg = loadImage('images/fork.png');
     napkinImg = loadImage('images/napkin.png');
     treeImg = loadImage('images/tree.png');
 }
 
-function setup()
-{
-    createCanvas(800,600);
+function setup() {
+    createCanvas(800, 600);
     tableLegColor = color(255, 204, 153);
     tableTopColor = color(139, 69, 19);
     plateColor = color(255);
@@ -48,19 +47,18 @@ function setup()
     sauceColor = color(255, 0, 0);
     cupColor = color(255);
     waterColor = color(0, 191, 255);
-    
+
     x = 400; // Plate starts in the center
 
     // Generate a cup position that does not overlap with the plate
     do {
-        cupOfWaterX = random(100, 700);
+        cupOfWaterX = random(500, 700); // Only on the right-hand side
     } while (abs(cupOfWaterX - x) < 100); // Ensure cup is at least 100 pixels away from the plate
-    napkinX = random(500, 700); // Napkin starts on the right side
+    napkinX = random(500, 700); // Napkin starts on the right-hand side
 
-
+    // Use setInterval to call changeSpeed() every 2 seconds
     setInterval(changeSpeed, 2000);
 }
-
 
 function drawTable(x, y) {
     // Draw the table legs
@@ -68,14 +66,13 @@ function drawTable(x, y) {
     rect(x, y, 20, 100);
     rect(x + 680, y, 20, 100);
     rect(x + 340, y, 20, 100);
-    rect(x + 680, y, 20, 100);
 
     // Draw the table top
     fill(tableTopColor);
     rect(x, y - 50, 700, 50);
 
+    // Draw the napkin on the left side of the table
     image(napkinImg, x + 200, y - 80, 50, 50);
-
 }
 
 function drawPlateofSpaghetti(x, y) {
@@ -96,9 +93,6 @@ function drawPlateofSpaghetti(x, y) {
     ellipse(x, y, 10, 10);
     ellipse(x - 10, y, 10, 10);
     ellipse(x + 10, y, 10, 10);
-
-
-    image(forkImg, x + 60, y + 20, 80, 30);
 }
 
 function drawCupofWater(x, y) {
@@ -111,53 +105,53 @@ function drawCupofWater(x, y) {
     ellipse(x + 10, y, 20, 10);
 }
 
-
 function changeSpeed() {
     // Randomly adjust the speed of the water cup and napkin
     waterSpeed = random(1, 4); // Random speed between 1 and 4
     napkinSpeed = random(0.5, 3); // Random speed between 0.5 and 3
 }
 
-function draw()
-{
+function draw() {
     background(150);
 
+    // Draw the tree in the background
     image(treeImg, 250, 50, 300, 300);
-    // upper border
-    noStroke();
-    fill(0,100,255);
-    rect(0,0,800,25);
-    // left border
-    rect(0,25,25,600);
-    // bottom border
-    rect(25,575,800,25);
-    // right border
-    rect(775,25,25,600);
 
+    // Draw borders
+    noStroke();
+    fill(0, 100, 255);
+    rect(0, 0, 800, 25); // Top border
+    rect(0, 25, 25, 600); // Left border
+    rect(25, 575, 800, 25); // Bottom border
+    rect(775, 25, 25, 600); // Right border
+
+    // Draw text
     fill(0);
     textFont(newFont);
     textSize(25);
-    text("Aaron Santa Cruz",550,560);
-    text("Spagetti Dinner",50,50);
+    text("Aaron Santa Cruz", 550, 560);
+    text("Spagetti Dinner", 50, 50);
 
-    // draw the shapes
+    // Draw table and items
     drawTable(50, 400);
+    image(forkImg, x + 60, 350 + 20, 80, 30); // Fork lays flat next to the plate
     drawPlateofSpaghetti(x, 350);
     drawCupofWater(cupOfWaterX, 320);
 
-    // Move the cup of water every 60 frames (~1 second at 60 FPS)
-    if (frameCounter % 60 == 0) {
-        cupOfWaterX += random(-10, 10);  // Move slightly in a random direction
-
-        if (cupOfWaterX < 100) {
-            cupOfWaterX = 100;
-        }
-        if (cupOfWaterX > 700) {
-            cupOfWaterX = 700;
-        }
+    // Move the water cup
+    cupOfWaterX += waterSpeed;
+    if (cupOfWaterX > 700 || cupOfWaterX < 500) {
+        waterSpeed *= -1; // Reverse direction if out of bounds
     }
 
-    frameCounter++; // Increment frame counter
+    // Move the napkin
+    napkinX += napkinSpeed;
+    if (napkinX > 700 || napkinX < 500) {
+        napkinSpeed *= -1; // Reverse direction if out of bounds
+    }
+
+    // Draw the moving napkin
+    image(napkinImg, napkinX, 380, 50, 50); // Napkin moves on the right side
 
     // Move plate of spaghetti with keyboard
     if (keyIsPressed) {
@@ -168,6 +162,7 @@ function draw()
             x += 5;
         }
 
+        // Keep the plate within table bounds
         if (x < 100) {
             x = 100;
         }
@@ -176,11 +171,5 @@ function draw()
         }
     }
 
-    // Move napkin
-    napkinX += napkinSpeed;
-    if (napkinX > 700 || napkinX < 500) {
-        napkinSpeed *= -1; // Reverse direction if out of bounds
-    }
-    // Draw napkin
-    image(napkinImg, napkinX, 380, 50, 50); // Adjust size and position
+    frameCounter++; // Increment frame counter
 }
