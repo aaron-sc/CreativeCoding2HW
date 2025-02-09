@@ -12,7 +12,7 @@ var cupOfWaterX;
 let frameCounter = 0; // Counter to control movement timing
 var newFont;
 var timerText = 0;
-var image;
+var myImage;
 
 
 // Set up colors for the shapes
@@ -30,7 +30,7 @@ function preload()
 {
     // preload the images and the font here from
     // newFont = loadFont('../fonts/Italiana-Regular.ttf');
-    image = loadImage('images/provar.png');
+    myImage = loadImage('images/provar.png');
 }
 
 function setup()
@@ -104,7 +104,7 @@ function draw()
 {
     background(150);
     // upper border
-    image(image,100,100);
+    image(myImage,100,100);
     noStroke();
     fill(0,100,255);
     rect(0,0,800,25);
