@@ -9,6 +9,7 @@ let cup;
 let water;
 var x = 400;
 var cupOfWaterX;
+let napkinX;
 let frameCounter = 0; // Counter to control movement timing
 var newFont;
 var timerText = 0;
@@ -16,6 +17,7 @@ var forkImg;
 var napkinImg;
 var treeImg;
 let waterSpeed = 2; // Initial speed of water cup
+let napkinSpeed = 1; // Initial speed of napkin
 
 // Set up colors for the shapes
 let tableLegColor;
@@ -52,6 +54,11 @@ function setup() {
     do {
         cupOfWaterX = random(500, 700); // Only on the right-hand side
     } while (abs(cupOfWaterX - x) < 100); // Ensure cup is at least 100 pixels away from the plate
+
+    napkinX = random(100, 300); // Napkin moves on the left-hand side of the table
+
+    // Use setInterval to call changeSpeed() every 2 seconds
+    setInterval(changeSpeed, 2000);
 }
 
 function drawTable(x, y) {
@@ -64,9 +71,6 @@ function drawTable(x, y) {
     // Draw the table top
     fill(tableTopColor);
     rect(x, y - 50, 700, 50);
-
-    // Draw the napkin on the left side of the table
-    image(napkinImg, x + 50, y - 80, 50, 50); // Napkin on the left, properly placed on the table
 }
 
 function drawPlateofSpaghetti(x, y) {
@@ -100,8 +104,9 @@ function drawCupofWater(x, y) {
 }
 
 function changeSpeed() {
-    // Randomly adjust the speed of the water cup
+    // Randomly adjust the speed of the water cup and napkin
     waterSpeed = random(1, 4); // Random speed between 1 and 4
+    napkinSpeed = random(0.5, 3); // Random speed between 0.5 and 3
 }
 
 function draw() {
@@ -127,10 +132,12 @@ function draw() {
 
     // Draw table and items
     drawTable(50, 400);
-    drawPlateofSpaghetti(x, 350);
 
-    // Draw fork (static, on the table to the right of the plate)
-    image(forkImg, x + 100, 370, 80, 30);
+    // Draw the fork (static, does not move with the plate)
+    image(forkImg, 500, 375, 80, 30); // Fork is static and lies flat on the table
+
+    // Draw the plate of spaghetti (moves with the keyboard)
+    drawPlateofSpaghetti(x, 350);
 
     // Move the water cup
     cupOfWaterX += waterSpeed;
@@ -140,6 +147,15 @@ function draw() {
 
     // Draw the moving water cup
     drawCupofWater(cupOfWaterX, 320);
+
+    // Move the napkin
+    napkinX += napkinSpeed;
+    if (napkinX > 300 || napkinX < 100) {
+        napkinSpeed *= -1; // Reverse direction if out of bounds
+    }
+
+    // Draw the moving napkin
+    image(napkinImg, napkinX, 370, 50, 50); // Napkin moves on the left side
 
     // Move plate of spaghetti with keyboard
     if (keyIsPressed) {
