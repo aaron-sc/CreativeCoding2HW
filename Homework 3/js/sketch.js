@@ -93,7 +93,7 @@ function drawPlateofSpaghetti(x, y) {
     ellipse(x + 10, y, 10, 10);
 
 
-    image(forkImg, x + 60, y + 25, 40, 100);
+    image(forkImg, x + 60, y + 20, 80, 30);
 }
 
 function drawCupofWater(x, y) {
