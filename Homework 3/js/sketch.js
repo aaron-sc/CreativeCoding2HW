@@ -104,7 +104,7 @@ function draw()
 {
     background(150);
     // upper border
-    image(donut,100,100);
+    image(image,100,100);
     noStroke();
     fill(0,100,255);
     rect(0,0,800,25);
