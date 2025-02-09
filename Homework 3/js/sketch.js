@@ -29,7 +29,7 @@ let waterColor;
 function preload()
 {
     // preload the images and the font here from
-    newFont = loadFont('../fonts/Italiana-Regular.ttf');
+    newFont = loadFont('fonts/Italiana-Regular.ttf');
     myImage = loadImage('images/provar.png');
 }
 
