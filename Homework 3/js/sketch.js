@@ -155,7 +155,7 @@ function draw() {
     }
 
     // Draw the moving napkin
-    image(napkinImg, napkinX, 370, 50, 50); // Napkin moves on the left side
+    image(napkinImg, napkinX, 350, 50, 50); // Napkin moves on the left side
 
     // Move plate of spaghetti with keyboard
     if (keyIsPressed) {
