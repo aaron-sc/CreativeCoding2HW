@@ -21,6 +21,8 @@ var S = 83;
 var D = 68;
 
 // Set Up Character
+var characterWidth = 100;
+var characterHeight = 150;
 var templeruncharacter;
 var animation = [];
 var idleAnimation = [];
@@ -32,7 +34,8 @@ var characterx = 30;
 var charactery = 100;
 var runAnimation = [];
 var running = false;
-var flip = false;
+var right = false;
+var left = false;
 
 // Load in idle and run animation files
 var idleFile = [];
@@ -108,7 +111,7 @@ function incrementIndex() {
 function movePlayer()
 {
     
-    if(!running) image(animation[i], characterx, charactery, 100, 150) ;
+    if(!running) image(animation[i], characterx, charactery, characterWidth, characterHeight) ;
     // change to use the draw function in character
     
     running = false;
@@ -118,15 +121,26 @@ function movePlayer()
     if (keyIsDown(S)) {
         charactery += 5;
     }
-    if (keyIsDown(A)) {
+    if (keyIsDown(A) && !keyIsDown(D)) {
         running = true;
-        image(runAnimation[i], characterx, charactery, 100, 150) ;
+        // Flip the image horizontally
+        push();
+        translate(characterWidth, 0); // Move to the center of the character
+        scale(-1, 1); // Flip horizontally
+        image(runAnimation[i], -characterx, charactery, characterWidth, characterHeight); // Draw the flipped image
+        pop();
         characterx -= 5;
     }
-    if (keyIsDown(D)) {
+    if (keyIsDown(D) && !keyIsDown(A)) {
         running = true;
-        image(runAnimation[i], characterx, charactery, 100, 150) ;
+        // Flip the image horizontally
+        push();
+        translate(characterWidth, 0); // Move to the center of the character
+        scale(1, 1); // Flip horizontally
+        image(runAnimation[i], characterx, charactery, characterWidth, characterHeight); // Draw the flipped image
+        pop();
         characterx += 5;
+
     }
     if (characterx < 0) {
         characterx = 0;
