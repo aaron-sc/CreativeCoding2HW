@@ -13,21 +13,6 @@ let napkinX;
 let frameCounter = 0; // Counter to control movement timing
 var newFont;
 var timerText = 0;
-var forkImg;
-var napkinImg;
-var treeImg;
-let waterSpeed = 2; // Initial speed of water cup
-let napkinSpeed = 1; // Initial speed of napkin
-
-// Set up colors for the shapes
-let tableLegColor;
-let tableTopColor;
-let plateColor;
-let spaghettiColor;
-let meatballsColor;
-let sauceColor;
-let cupColor;
-let waterColor;
 
 // Keys
 var W = 87;
@@ -45,6 +30,13 @@ var j = 0;
 var counter = 0;
 var characterx = 30;
 var charactery = 100;
+var runAnimation = [];
+var running = false;
+var flip = false;
+
+// Load in idle and run animation files
+var idleFile = [];
+var runFile = [];
 
 // Set up food
 var spagetti;
@@ -52,38 +44,24 @@ var platesOfSpaghetti = [];
 
 function preload() {
     // Preload the images and the font
-    newFont = loadFont('fonts/Italiana-Regular.ttf');
-    forkImg = loadImage('images/fork.png');
-    napkinImg = loadImage('images/napkin.png');
-    treeImg = loadImage('images/tree.png');
-    for (var i = 0; i < 10; i++) {
-        templeruncharacter = new Character('character/Idle__00' + i + '.png', 30, 100);
-        templeObjects[i] = templeruncharacter;
-    }
-    for (var i = 0; i <templeObjects.length; i++) {
-        animation[i] = templeObjects[i].getImage();
-    }
+    idleFile = loadStrings('data/idle.txt');
+    runFile = loadStrings('data/run.txt');
+
 }
 
 function setup() {
     createCanvas(800, 600);
-    tableLegColor = color(255, 204, 153);
-    tableTopColor = color(139, 69, 19);
-    plateColor = color(255);
-    spaghettiColor = color(255, 255, 102);
-    meatballsColor = color(153, 101, 21);
-    sauceColor = color(255, 0, 0);
-    cupColor = color(255);
-    waterColor = color(0, 191, 255);
-
-    x = 400; // Plate starts in the center
-
-    // Generate a cup position that does not overlap with the plate
-    do {
-        cupOfWaterX = random(500, 700); // Only on the right-hand side
-    } while (abs(cupOfWaterX - x) < 100); // Ensure cup is at least 100 pixels away from the plate
-
-    napkinX = random(100, 300); // Napkin moves on the left-hand side of the table
+    for (var i = 0; i < idleFile.length; i++) {
+        templeruncharacter = new Character(idleFile[i], 30, 100);
+        templeObjects[i] = templeruncharacter;
+        animation[i] = templeObjects[i].getImage();
+    }
+    for (var i = 0; i < runFile.length; i++) {
+        templeruncharacter = new Character(runFile[i], 30, 100);
+        console.log(templeruncharacter.toString());
+        templeObjects[i] = templeruncharacter;
+        runAnimation[i] = templeObjects[i].getImage();
+    }
 
     // Use setInterval to call changeSpeed() every 2 seconds and incrementIndex() every 40 milliseconds
     setInterval(changeSpeed, 2000);
@@ -96,48 +74,6 @@ function setup() {
     }
 }
 
-function drawTable(x, y) {
-    // Draw the table legs
-    fill(tableLegColor);
-    rect(x, y, 20, 100);
-    rect(x + 680, y, 20, 100);
-    rect(x + 340, y, 20, 100);
-
-    // Draw the table top
-    fill(tableTopColor);
-    rect(x, y - 50, 700, 50);
-}
-
-function drawPlateofSpaghetti(x, y) {
-    // Draw the plate
-    fill(plateColor);
-    ellipse(x, y, 100, 20);
-
-    // Draw the spaghetti
-    fill(spaghettiColor);
-    ellipse(x, y, 80, 20);
-
-    // Draw the sauce
-    fill(sauceColor);
-    ellipse(x, y, 80, 10);
-
-    // Draw the meatballs
-    fill(meatballsColor);
-    ellipse(x, y, 10, 10);
-    ellipse(x - 10, y, 10, 10);
-    ellipse(x + 10, y, 10, 10);
-}
-
-function drawCupofWater(x, y) {
-    // Draw the cup
-    fill(cupColor);
-    rect(x, y, 20, 30);
-
-    // Draw the water
-    fill(waterColor);
-    ellipse(x + 10, y, 20, 10);
-}
-
 function changeSpeed() {
     // Randomly adjust the speed of the water cup and napkin
     waterSpeed = random(1, 4); // Random speed between 1 and 4
@@ -148,7 +84,6 @@ function draw() {
     background(150);
     movePlayer();
 
-    image(animation[i], characterx, charactery, 100, 150) ;
     frameCounter++; // Increment frame counter
 
     // Draw each plate of spaghetti
@@ -161,8 +96,6 @@ function draw() {
             // Increment score or perform other actions
         }
     });
-
-
 }
 
 function incrementIndex() {
@@ -174,6 +107,11 @@ function incrementIndex() {
 
 function movePlayer()
 {
+    
+    if(!running) image(animation[i], characterx, charactery, 100, 150) ;
+    // change to use the draw function in character
+    
+    running = false;
     if (keyIsDown(W)) {
         charactery -= 5;
     }
@@ -181,9 +119,13 @@ function movePlayer()
         charactery += 5;
     }
     if (keyIsDown(A)) {
+        running = true;
+        image(runAnimation[i], characterx, charactery, 100, 150) ;
         characterx -= 5;
     }
     if (keyIsDown(D)) {
+        running = true;
+        image(runAnimation[i], characterx, charactery, 100, 150) ;
         characterx += 5;
     }
     if (characterx < 0) {

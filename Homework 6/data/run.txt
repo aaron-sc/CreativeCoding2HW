@@ -1,0 +1,10 @@
+character/Run__000.png
+character/Run__001.png
+character/Run__002.png
+character/Run__003.png
+character/Run__004.png
+character/Run__005.png
+character/Run__006.png
+character/Run__007.png
+character/Run__008.png
+character/Run__009.png
