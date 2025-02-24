@@ -1,38 +1,38 @@
 class Food {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
+    constructor(x2, y2) {
+        this.x2 = x2;
+        this.y2 = y2;
     }
     randomX() {
-        this.x = random(0, width);
+        this.x2 = random(0, width);
     }
     randomY() 
     {
-        this.y = random(0, height);
+        this.y2 = random(0, height);
     }
     getX() {
-        return this.x;
+        return this.x2;
     }
     getY() {
-        return this.y;
+        return this.y2;
     }
     drawSpaghetti() {
         // Draw the plate
         fill(plateColor);
-        ellipse(this.x, this.y, 100, 20);
+        ellipse(this.x2, this.y2, 100, 20);
     
         // Draw the spaghetti
         fill(spaghettiColor);
-        ellipse(this.x, this.y, 80, 20);
+        ellipse(this.x2, this.y2, 80, 20);
     
         // Draw the sauce
         fill(sauceColor);
-        ellipse(this.x, this.y, 80, 10);
+        ellipse(this.x2, this.y2, 80, 10);
     
         // Draw the meatballs
         fill(meatballsColor);
-        ellipse(this.x, this.y, 10, 10);
-        ellipse(this.x - 10, this.y, 10, 10);
-        ellipse(this.x + 10, this.y, 10, 10);
+        ellipse(this.x2, this.y2, 10, 10);
+        ellipse(this.x2 - 10, this.y2, 10, 10);
+        ellipse(this.x2 + 10, this.y2, 10, 10);
     }
 }

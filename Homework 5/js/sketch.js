@@ -210,6 +210,7 @@ function draw() {
     //     }
     // }
     movePlayer();
+
     image(animation[i], characterx, charactery, 100, 150) ;
     frameCounter++; // Increment frame counter
 
@@ -217,12 +218,14 @@ function draw() {
     platesOfSpaghetti.forEach(function (plate) {
         plate.drawSpaghetti();
         // Check if player is touching the plate
-        if (characterx < plate.x + 50 && characterx + 100 > plate.x && charactery < plate.y + 50 && charactery + 150 > plate.y) {
+        if (templeObjects[i].hasCollided(plate.getX(), plate.getY(), 100, 20)) {
             // If touching, remove the plate
             platesOfSpaghetti.splice(platesOfSpaghetti.indexOf(plate), 1);
+            // Increment score or perform other actions
         }
-
     });
+
+
 }
 
 function incrementIndex() {
@@ -261,4 +264,6 @@ function movePlayer()
     if (charactery > 400) {
         charactery = 400;
     }
+    templeObjects[i].x = characterx;
+    templeObjects[i].y = charactery;
 }
