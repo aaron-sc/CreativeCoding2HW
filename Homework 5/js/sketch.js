@@ -255,14 +255,9 @@ function movePlayer()
     if (characterx > width - 100) {
         characterx = width - 100;
     }
-    if (charactery < 0) {
-        charactery = 0;
-    }
+
     if (charactery > height - 150) {
         charactery = height - 150;
-    }
-    if (charactery > 400) {
-        charactery = 400;
     }
     templeObjects[i].x = characterx;
     templeObjects[i].y = charactery;
