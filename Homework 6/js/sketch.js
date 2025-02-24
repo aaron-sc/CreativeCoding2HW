@@ -27,6 +27,7 @@ var templeruncharacter;
 var animation = [];
 var idleAnimation = [];
 var templeObjects = [];
+var templeObjects2 = [];
 var i = 0;
 var j = 0;
 var counter = 0;
@@ -61,9 +62,8 @@ function setup() {
     }
     for (var i = 0; i < runFile.length; i++) {
         templeruncharacter = new Character(runFile[i], 30, 100);
-        console.log(templeruncharacter.toString());
-        templeObjects[i] = templeruncharacter;
-        runAnimation[i] = templeObjects[i].getImage();
+        templeObjects2[i] = templeruncharacter;
+        runAnimation[i] = templeObjects2[i].getImage();
     }
 
     // Use setInterval to call changeSpeed() every 2 seconds and incrementIndex() every 40 milliseconds
@@ -85,7 +85,7 @@ function changeSpeed() {
 
 function draw() {
     background(150);
-    movePlayer();
+    
 
     frameCounter++; // Increment frame counter
 
@@ -93,12 +93,13 @@ function draw() {
     platesOfSpaghetti.forEach(function (plate) {
         plate.drawSpaghetti();
         // Check if player is touching the plate
-        if (templeObjects[i].hasCollided(plate.getX(), plate.getY(), 100, 20)) {
+        if (templeObjects[i].hasCollided(plate.getX(), plate.getY(), 100, 20) || templeObjects2[i].hasCollided(plate.getX(), plate.getY(), 100, 20)) {
             // If touching, remove the plate
             platesOfSpaghetti.splice(platesOfSpaghetti.indexOf(plate), 1);
             // Increment score or perform other actions
         }
     });
+    movePlayer(); 
 }
 
 function incrementIndex() {
@@ -122,6 +123,7 @@ function movePlayer()
         charactery += 5;
     }
     if (keyIsDown(A) && !keyIsDown(D)) {
+
         running = true;
         // Flip the image horizontally
         push();
@@ -133,14 +135,13 @@ function movePlayer()
     }
     if (keyIsDown(D) && !keyIsDown(A)) {
         running = true;
-        // Flip the image horizontally
+        // Flip to the right, but make sure it doenst skip frames
         push();
         translate(characterWidth, 0); // Move to the center of the character
         scale(1, 1); // Flip horizontally
         image(runAnimation[i], characterx, charactery, characterWidth, characterHeight); // Draw the flipped image
         pop();
         characterx += 5;
-
     }
     if (characterx < 0) {
         characterx = 0;
@@ -154,4 +155,6 @@ function movePlayer()
     }
     templeObjects[i].x = characterx;
     templeObjects[i].y = charactery;
+    templeObjects2[i].x = characterx;
+    templeObjects2[i].y = charactery;
 }
