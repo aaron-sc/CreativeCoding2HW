@@ -38,6 +38,15 @@ var running = false;
 var right = false;
 var left = false;
 
+// Set up game timer
+var gameTimer = 60;
+var gameTimerText = "Time Remaining: " + gameTimer;
+var gameRunning = true;
+
+// Set up score
+var score = 0;
+var scoreText = "Score: " + score;
+
 // Load in idle and run animation files
 var idleFile = [];
 var runFile = [];
@@ -45,6 +54,7 @@ var runFile = [];
 // Set up food
 var spagetti;
 var platesOfSpaghetti = [];
+var plates = 6;
 
 function preload() {
     // Preload the images and the font
@@ -54,7 +64,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(800, 600);
+    createCanvas(2000, 1000);
     for (var i = 0; i < idleFile.length; i++) {
         templeruncharacter = new Character(idleFile[i], 30, 100);
         templeObjects[i] = templeruncharacter;
@@ -69,8 +79,8 @@ function setup() {
     // Use setInterval to call changeSpeed() every 2 seconds and incrementIndex() every 40 milliseconds
     setInterval(changeSpeed, 2000);
     setInterval(incrementIndex, 40);
-    for (var i = 0; i < 4; i++) {
-        spagetti = new Food(350, 350);
+    for (var i = 0; i < plates; i++) {
+        spagetti = new Food(500, 500);
         spagetti.randomX();
         spagetti.randomY();
         platesOfSpaghetti.push(spagetti);
@@ -84,22 +94,60 @@ function changeSpeed() {
 }
 
 function draw() {
-    background(150);
-    
-
+    background(200);
     frameCounter++; // Increment frame counter
+    // Display the score
+    textSize(24);
+    fill(0);
+    scoreText = "Score: " + score;
 
-    // Draw each plate of spaghetti
-    platesOfSpaghetti.forEach(function (plate) {
-        plate.drawSpaghetti();
-        // Check if player is touching the plate
-        if (templeObjects[i].hasCollided(plate.getX(), plate.getY(), 100, 20) || templeObjects2[i].hasCollided(plate.getX(), plate.getY(), 100, 20)) {
-            // If touching, remove the plate
-            platesOfSpaghetti.splice(platesOfSpaghetti.indexOf(plate), 1);
-            // Increment score or perform other actions
+    // Check for game over condition
+    if (score >= plates) {
+        gameRunning = false;
+        gameTimerText = "You Win! Final Score: " + score;
+        scoreText = "";
+    }
+    else if (gameTimer <= 0) {
+        gameRunning = false;
+        gameTimerText = "Game Over! Final Score: " + score;
+        scoreText = "";
+    }
+    text(scoreText, 10, 30);
+    if(gameRunning) {
+
+        movePlayer(); 
+        // Display game timer
+        textSize(20);
+        fill(0);
+        text(gameTimerText, width - 200, 30);
+        if (frameCounter % 60 == 0) { // Update every second
+            gameTimer--;
+            gameTimerText = "Time Remaining: " + gameTimer;
         }
-    });
-    movePlayer(); 
+
+        // Draw each plate of spaghetti
+        platesOfSpaghetti.forEach(function (plate) {
+            // Randomly move a random plate every few frames
+            if (frameCounter % 120 == 0 && random() < 0.5) {
+                plate.randomX();
+                plate.randomY();
+            }
+            plate.drawSpaghetti();
+            // Check if player is touching the plate while running or idle
+            if (templeObjects[i].hasCollided(plate.getX(), plate.getY(), 100, 20) || templeObjects2[i].hasCollided(plate.getX(), plate.getY(), 100, 20)) {
+                // If touching, remove the plate
+                platesOfSpaghetti.splice(platesOfSpaghetti.indexOf(plate), 1);
+                // Increment score or perform other actions
+                score++;
+                
+            }
+        });
+        
+    }
+    else {
+        text(gameTimerText, width / 2, height / 2);
+    }
+
 }
 
 function incrementIndex() {
@@ -146,13 +194,20 @@ function movePlayer()
     if (characterx < 0) {
         characterx = 0;
     }
-    if (characterx > width - 100) {
-        characterx = width - 100;
+    if (characterx > width - characterWidth) {
+        characterx = width - characterWidth;
     }
-
-    if (charactery > height - 150) {
-        charactery = height - 150;
+    if (charactery < 0) {
+        charactery = 0;
     }
+    if (charactery > height - characterHeight) {
+        charactery = height - characterHeight;
+    }
+// Ensure character cant go off the right side of the screen
+    if( characterx > width - characterWidth) {
+        characterx = width - characterWidth;
+    }
+    
     templeObjects[i].x = characterx;
     templeObjects[i].y = charactery;
     templeObjects2[i].x = characterx;
