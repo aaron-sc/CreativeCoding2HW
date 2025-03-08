@@ -38,6 +38,7 @@ var running = false;
 var right = false;
 var left = false;
 
+
 // Set up game timer
 var gameTimer = 60;
 var gameTimerText = "Time Remaining: " + gameTimer;
@@ -100,6 +101,7 @@ function draw() {
     textSize(24);
     fill(0);
     scoreText = "Score: " + score;
+
 
     // Check for game over condition
     if (score >= plates) {
@@ -183,9 +185,9 @@ function movePlayer()
     }
     if (keyIsDown(D) && !keyIsDown(A)) {
         running = true;
-        // Flip to the right, but make sure it doenst skip frames
+        // Flip to the right (moving forward)
         push();
-        translate(characterWidth, 0); // Move to the center of the character
+        translate(0, 0); // Move to the center of the character
         scale(1, 1); // Flip horizontally
         image(runAnimation[i], characterx, charactery, characterWidth, characterHeight); // Draw the flipped image
         pop();
