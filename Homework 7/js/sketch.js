@@ -44,7 +44,8 @@ var left = false;
 // Set up game timer
 var gameTimer = 60;
 var gameTimerText = "Time Remaining: " + gameTimer;
-var gameRunning = false;
+var gameRunning = true;
+var playing = false;
 
 // Set up score
 var score = 0;
@@ -57,7 +58,8 @@ var runFile = [];
 // Set up food
 var spagetti;
 var platesOfSpaghetti = [];
-var plates = 6;
+var goodPlates = 8;
+var badPlates = goodPlates / 2;
 
 // Music
 var backgroundmusic, eatGoodSound, eatBadSound;
@@ -67,10 +69,9 @@ function preload() {
     idleFile = loadStrings('data/idle.txt');
     runFile = loadStrings('data/run.txt');
 
-    soundFormats('wav', 'mp3');
-    backgroundmusic = loadSound('audio/music');
-    eatGoodSound = loadSound('audio/goodFood');
-    eatBadSound = loadSound('audio/badFood');
+    backgroundmusic = loadSound('audio/music.wav');
+    eatGoodSound = loadSound('audio/goodFood.wav');
+    eatBadSound = loadSound('audio/badFood.mp3');
 }
 
 function setup() {
@@ -89,8 +90,14 @@ function setup() {
     // Use setInterval to call changeSpeed() every 2 seconds and incrementIndex() every 40 milliseconds
     setInterval(changeSpeed, 2000);
     setInterval(incrementIndex, 40);
-    for (var i = 0; i < plates; i++) {
-        spagetti = new Food(500, 500);
+    for (var i = 0; i < goodPlates; i++) {
+        spagetti = new Food(0, 0, false);
+        spagetti.randomX();
+        spagetti.randomY();
+        platesOfSpaghetti.push(spagetti);
+    }
+    for (var i = 0; i < badPlates; i++) {
+        spagetti = new Food(0, 0, true);
         spagetti.randomX();
         spagetti.randomY();
         platesOfSpaghetti.push(spagetti);
@@ -105,24 +112,28 @@ function changeSpeed() {
 
 function draw() {
     background(200);
+    if(playing) {
     frameCounter++; // Increment frame counter
     // Display the score
     textSize(24);
     fill(0);
     scoreText = "Score: " + score;
 
-    rect(characterx, charactery, characterWidth, characterHeight);
+    // Hitbox for the character
+    // rect(characterx, charactery, characterWidth, characterHeight);
 
     // Check for game over condition
-    if (score >= plates) {
+    if (score >= goodPlates) {
         gameRunning = false;
         gameTimerText = "You Win! Final Score: " + score;
         scoreText = "";
+        backgroundmusic.stop();
     }
     else if (gameTimer <= 0) {
         gameRunning = false;
         gameTimerText = "Game Over! Final Score: " + score;
         scoreText = "";
+        backgroundmusic.stop();
     }
     text(scoreText, 10, 30);
     if(gameRunning) {
@@ -140,17 +151,25 @@ function draw() {
         // Draw each plate of spaghetti
         platesOfSpaghetti.forEach(function (plate) {
             // Randomly move a random plate every few frames
-            // if (frameCounter % 120 == 0 && random() < 0.5) {
-            //     plate.randomX();
-            //     plate.randomY();
-            // }
+            if (frameCounter % 240 == 0 && random() < 0.5) {
+                plate.randomX();
+                plate.randomY();
+            }
             plate.drawSpaghetti();
             // Check if player is touching the plate while running or idle
             if (collideRectRect(characterx, charactery, characterWidth, characterHeight, plate.getX(), plate.getY(), plate.getWidth(), plate.getHeight())) {
                 // If touching, remove the plate
                 platesOfSpaghetti.splice(platesOfSpaghetti.indexOf(plate), 1);
+                // Play sound effect
+                if( plate.badFood) {
+                    eatBadSound.play();
+                    gameTimer -= 10;
+                }
+                else {
+                    eatGoodSound.play();
+                    score++;
+                }
                 // Increment score or perform other actions
-                score++;
                 
             }
         });
@@ -159,6 +178,7 @@ function draw() {
     else {
         text(gameTimerText, width / 2, height / 2);
     }
+}
 }
 
 
@@ -172,10 +192,10 @@ function incrementIndex() {
 
 function mousePressed() {
 
-    if(!gameRunning){
+    if(!playing){
         backgroundmusic.loop();
         backgroundmusic.setVolume(0.1);
-        gameRunning = true;
+        playing = true;
     }
 
     

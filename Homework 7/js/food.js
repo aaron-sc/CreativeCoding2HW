@@ -1,7 +1,8 @@
 class Food {
-    constructor(x2, y2) {
+    constructor(x2, y2, badFood) {
         this.x2 = x2;
         this.y2 = y2;
+        this.badFood = badFood;
     }
     randomX() {
         this.x2 = random(0, width);
@@ -24,12 +25,17 @@ class Food {
     }
     drawSpaghetti() {
         // Draw the plate (use circles)
+        if(!this.badFood) {
+            fill(255, 255, 255);
+            ellipse(this.x2, this.y2, 100, 20);
+        }
+        else {
+            fill(255, 0, 0);
+            ellipse(this.x2, this.y2, 100, 20);
+        }
         var spaghettiColor = color(255, 255, 102);
         var meatballsColor = color(153, 101, 21);
         var sauceColor = color(255, 0, 0);
-        var plateColor = color(255, 255, 255);
-        fill(plateColor);
-        ellipse(this.x2, this.y2, 100, 20);
         
         // Draw the spaghetti
         fill(spaghettiColor);
