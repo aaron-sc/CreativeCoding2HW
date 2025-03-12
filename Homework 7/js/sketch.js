@@ -22,6 +22,26 @@ var D = 68;
 
 // Control
 var playing = false;
+let testButton = new Button("box", 300, 250);
+testButton.width = 200;
+testButton.height = 50;
+testButton.cornerSize = 10;
+testButton.cornerDistance = 0;
+testButton.shrink = 0;
+testButton.Pdist = 0;
+testButton.Pshrink = 0;
+testButton.col1 = [0,230,180];
+testButton.col2 = [0,30,30];
+testButton.stroke = [0,230,180];
+testButton.strokeWeight = 2;
+testButton.fill = testButton.col1;
+testButton.Pfill = testButton.fill;
+testButton.Pstroke = testButton.stroke;
+testButton.text = "START";
+testButton.textSize = 20;
+testButton.textColor = testButton.col2;
+testButton.PtextColor = testButton.col2;
+
 
 // Set Up Character
 var characterWidth = 100;
@@ -74,8 +94,69 @@ function preload() {
     eatBadSound = loadSound('audio/badFood.mp3');
 }
 
+testButton.render = function(){
+  
+    // animations
+    let Ptimer = this.timeSincePressedChange
+    let Htimer = min(this.timeSinceHoverChange, Ptimer)
+    
+    if(this.hover && !this.pressed){ // when hovered over
+    //   this.cornerDistance = Clerp(this.Pdist, 10, sin(min(Htimer*2,1)*PI/2))
+      this.shrink = Clerp(this.Pshrink, 3, Htimer*5)
+      this.fill = ClerpColor(this.Pfill, this.col2, Htimer*5)
+      this.textColor = ClerpColor(this.PtextColor, this.col1, Htimer*5)
+    }else if(this.pressed){ // when clicked
+      this.cornerDistance = Clerp(this.Pdist, 15, sin(min(Ptimer*4,1)*PI/2))
+      this.shrink = Clerp(this.Pshrink, 5, Ptimer*5)
+      this.fill = ClerpColor(this.Pfill, this.col1, Ptimer*5)
+      this.textColor = ClerpColor(this.PtextColor, this.col2, Htimer*5)
+    }else{ // when not hovered or clicked
+      this.cornerDistance = Clerp(this.Pdist, 0, sin(min(Htimer*2,1)*PI/2))
+      this.shrink = Clerp(this.Pshrink, 0, Htimer*5)
+      this.fill = ClerpColor(this.Pfill, this.col1, Htimer*5)
+      this.textColor = ClerpColor(this.PtextColor, this.col2, Htimer*5)
+    }
+    
+    
+    fill(this.fill)
+    stroke(this.fill)
+    rect(this.x + this.shrink, this.y + this.shrink, this.width - 2*this.shrink, this.height - 2*this.shrink)
+    
+    textAlign(CENTER,CENTER)
+    noStroke()
+    fill(this.textColor)
+    textSize(this.textSize)
+    text(this.text,this.x + this.shrink, this.y + this.shrink, this.width - 2*this.shrink, this.height - 2*this.shrink)
+    
+    let x = this.x
+    let y = this.y
+    let w = this.width
+    let h = this.height
+    let d = this.cornerDistance
+    let s = this.cornerSize
+    
+    stroke(this.stroke)
+    strokeWeight(this.strokeWeight)
+    
+    // top left corner
+    line(x - d, y - d, x - d + s, y - d)
+    line(x - d, y - d, x - d, y - d + s)
+    
+    // top right corner
+    line(x + w + d, y - d, x + w + d - s, y - d)
+    line(x + w + d, y - d, x + w + d, y - d + s)
+    
+    // bottom left corner
+    line(x - d, y + h + d, x - d + s, y + h + d)
+    line(x - d, y + h + d, x - d, y + h + d - s)
+    
+    // bottom right corner
+    line(x + w + d, y + h + d, x + w + d - s, y + h + d)
+    line(x + w + d, y + h + d, x + w + d, y + h + d - s)
+  }
+
 function setup() {
-    createCanvas(1000, 800);
+    createCanvas(800, 600);
     for (var i = 0; i < idleFile.length; i++) {
         templeruncharacter = new Character(idleFile[i], 30, 100);
         templeObjects[i] = templeruncharacter;
@@ -111,6 +192,13 @@ function changeSpeed() {
 }
 
 function draw() {
+    if(testButton.pressed && !playing){
+        backgroundmusic.loop();
+        backgroundmusic.setVolume(0.1);
+        playing = true;
+        testButton.hidden = true;
+    }
+    noStroke();
     background(200);
     if(playing) {
     frameCounter++; // Increment frame counter
@@ -135,7 +223,7 @@ function draw() {
         scoreText = "";
         backgroundmusic.stop();
     }
-    text(scoreText, 10, 30);
+    text(scoreText, 50, 30);
     if(gameRunning) {
 
         movePlayer(); 
@@ -190,17 +278,13 @@ function incrementIndex() {
     }
 }
 
-function mousePressed() {
+// function mousePressed() {
+    
 
-    if(!playing){
-        backgroundmusic.loop();
-        backgroundmusic.setVolume(0.1);
-        playing = true;
-    }
 
     
 
-  }
+//   }
 
 function movePlayer()
 {
