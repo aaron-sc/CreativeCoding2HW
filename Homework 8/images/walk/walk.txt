@@ -1,0 +1,10 @@
+./images/walk/Run__000.png
+./images/walk/Run__001.png
+./images/walk/Run__002.png
+./images/walk/Run__003.png
+./images/walk/Run__004.png
+./images/walk/Run__005.png
+./images/walk/Run__006.png
+./images/walk/Run__007.png
+./images/walk/Run__008.png
+./images/walk/Run__009.png
