@@ -33,7 +33,7 @@ class animationImage {
     }
 
     createAnimation() {
-        this.currentAnimation = createSprite(this.x, this.y);
+        this.currentAnimation = createSprite(this.x, this.y, this.w, this.h);
     }
 
     loadAnimation(animationType, fileNames) {
@@ -53,8 +53,11 @@ class animationImage {
 
         this.currentAnimation.frameDelay = 5;
         this.currentAnimation.scale = .5;
-        this.currentAnimation.w = this.w;
-        this.currentAnimation.h = this.h;
+        this.currentAnimation.width = 125;
+        this.currentAnimation.height = 250;
+        this.currentAnimation.rotation = 0;
+        this.currentAnimation.rotationSpeed = 0;
+        this.currentAnimation.debug = true;
         this.currentAnimation.changeAnimation(animationType);
         if(animationType == 'idle' && this.direction == 'idle') {
             this.currentAnimation.velocity.x = 0;

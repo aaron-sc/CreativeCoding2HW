@@ -12,6 +12,9 @@ var numberBadItems = 10;
 var collisionItems = [];
 var numberCollisionItems = 3;
 
+const particles = [];
+var clearParticles = false;
+
 var score = 0;
 var lives = 5;
 
@@ -44,56 +47,47 @@ function createCollisionItem(x, y) {
 }
 function setup() {
   createCanvas(900,800);
-  myAnimation = new animationImage(200, 200, 50, 50, 3);
+  var animationW = 125;
+  var animationH = 200;
+  myAnimation = new animationImage(200, 200, animationW, animationH, 3);
   myAnimation.loadAnimation('idle', idlePaths);
   myAnimation.loadAnimation('walk', walkPaths);
   myAnimation.debug = true;
-
+// Spawn Good Items, Bad Items, and Collision Items not touching each other or the player
     for(var i = 0; i < numGoodItems; i++)
     {
-        // create a good item not on top of the player
-        var x = random(0, width);
-        var y = random(0, height);
-        while (dist(x, y, myAnimation.getX(), myAnimation.getY()) < 100)
-        {
-            x = random(0, width);
-            y = random(0, height);
-        }
-        var goodItem = createGoodItem(x, y);
-        // goodItem.debug = true;
+        var goodItem = createGoodItem(random(0, width), random(0, height));
         goodItems.push(goodItem);
     }
     for(var i = 0; i < numberBadItems; i++)
     {
-        // create a bad item not on top of the player
-        var x = random(0, width);
-        var y = random(0, height);
-        while (dist(x, y, myAnimation.getX(), myAnimation.getY()) < 100)
-        {
-            x = random(0, width);
-            y = random(0, height);
-        }
-        var badItem = createBadItem(x, y);
-        // badItem.debug = true;
+        var badItem = createBadItem(random(0, width), random(0, height));
         badItems.push(badItem);
-
     }
     for(var i = 0; i < numberCollisionItems; i++)
     {
-        // create a collision item not on top of the player
-        var x = random(0, width);
-        var y = random(0, height);
-        while (dist(x, y, myAnimation.getX(), myAnimation.getY()) < 100)
-        {
-            x = random(0, width);
-            y = random(0, height);
-        }
-        var collisionItem = createCollisionItem(x, y);
-        // collisionItem.debug = true;
+        var collisionItem = createCollisionItem(random(0, width), random(0, height));
         collisionItems.push(collisionItem);
-
     }
+    
+}
 
+function explode(x, y) {
+    for (let i = 0; i < 5; i++) {
+        let p = new Particle(x,y);
+        particles.push(p);
+        
+      }
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].show();
+        console.log(particles[i]);
+        if (particles[i].finished()) {
+          // remove this particle
+          
+          particles.splice(i, 1);
+        }
+      }
 }
 function checkCollision() {
     myAnimation.currentAnimation.rotationSpeed = 0;
@@ -124,18 +118,30 @@ function checkCollision() {
         {
             if(myAnimation.isColliding(collisionItems[i]))
             {
+                // Clear all current particles
+                if(!clearParticles) {
+                    // particles.splice(0, particles.length);
+                    clearParticles = true;
+                }
+                explode(collisionItems[i].x, collisionItems[i].y);
                 myAnimation.drawAnimation('idle');
                 myAnimation.updatePosition('idle');
                 myAnimation.currentAnimation.velocity.x = 0;
                 myAnimation.currentAnimation.velocity.y = 0;
             }
+            else {
+                clearParticles = false;
+            }
         }
 }
+
+
 
 // display all the frames using the draw function as a loop
 function draw() 
 {   
-    background(10);
+    background(0);
+
     if(gameStart == false)
     {
         fill(255);
