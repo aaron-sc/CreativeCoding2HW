@@ -13,7 +13,6 @@ var collisionItems = [];
 var numberCollisionItems = 3;
 
 const particles = [];
-var clearParticles = false;
 
 var score = 0;
 var lives = 5;
@@ -118,20 +117,13 @@ function checkCollision() {
         {
             if(myAnimation.isColliding(collisionItems[i]))
             {
-                // Clear all current particles
-                if(!clearParticles) {
-                    // particles.splice(0, particles.length);
-                    clearParticles = true;
-                }
                 explode(collisionItems[i].x, collisionItems[i].y);
                 myAnimation.drawAnimation('idle');
                 myAnimation.updatePosition('idle');
                 myAnimation.currentAnimation.velocity.x = 0;
                 myAnimation.currentAnimation.velocity.y = 0;
             }
-            else {
-                clearParticles = false;
-            }
+
         }
 }
 
