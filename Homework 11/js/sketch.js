@@ -46,8 +46,8 @@ function createCollisionItem(x, y) {
 }
 function setup() {
   createCanvas(900,800);
-  var animationW = 125;
-  var animationH = 200;
+  var animationW = 75;
+  var animationH = 125;
   myAnimation = new animationImage(200, 200, animationW, animationH, 3);
   myAnimation.loadAnimation('idle', idlePaths);
   myAnimation.loadAnimation('walk', walkPaths);

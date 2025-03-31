@@ -41,8 +41,8 @@ class animationImage {
 
         this.currentAnimation.addAnimation(animationType, fileNames[0], fileNames[fileNames.length - 1]);
         // set the hit box
-        this.currentAnimation.width = 350;
-        this.currentAnimation.height = 500;
+        this.currentAnimation.width = this.w;
+        this.currentAnimation.height = this.h;
         this.currerotationSpeed = 0;
         // this.currentAnimation.debug = true;
 
@@ -53,8 +53,8 @@ class animationImage {
 
         this.currentAnimation.frameDelay = 5;
         this.currentAnimation.scale = .5;
-        this.currentAnimation.width = 125;
-        this.currentAnimation.height = 250;
+        this.currentAnimation.width = this.w;
+        this.currentAnimation.height = this.h;
         this.currentAnimation.rotation = 0;
         this.currentAnimation.rotationSpeed = 0;
         this.currentAnimation.debug = true;
