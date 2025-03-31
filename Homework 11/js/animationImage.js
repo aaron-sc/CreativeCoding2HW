@@ -52,7 +52,7 @@ class animationImage {
     drawAnimation(animationType) {
 
         this.currentAnimation.frameDelay = 5;
-        this.currentAnimation.scale = .5;
+        this.currentAnimation.scale = .3;
         this.currentAnimation.width = this.w;
         this.currentAnimation.height = this.h;
         this.currentAnimation.rotation = 0;

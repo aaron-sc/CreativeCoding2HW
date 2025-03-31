@@ -46,8 +46,8 @@ function createCollisionItem(x, y) {
 }
 function setup() {
   createCanvas(900,800);
-  var animationW = 75;
-  var animationH = 125;
+  var animationW = 50;
+  var animationH = 50;
   myAnimation = new animationImage(200, 200, animationW, animationH, 3);
   myAnimation.loadAnimation('idle', idlePaths);
   myAnimation.loadAnimation('walk', walkPaths);
@@ -147,7 +147,7 @@ function draw()
     {
         fill(255);
         textSize(32);
-        text('You Win', width/2 - 50, height/2);
+        text('You Win!', width/2 - 50, height/2);
         text('Score: ' + score, width/2 - 50, height/2 + 50);
         myAnimation.drawAnimation('idle');
         myAnimation.updatePosition('idle');
