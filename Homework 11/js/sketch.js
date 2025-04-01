@@ -3,7 +3,7 @@ var idlePaths = [];
 var myAnimation;
 var myWalkAnimation;
 var walkPaths = [];
-var catImage;
+var jumpPaths = [];
 
 var goodItems = [];
 var numGoodItems = 10;
@@ -22,6 +22,7 @@ var gameStart = true;
 function preload() {
    idlePaths = loadStrings("./images/idle/idle.txt");
    walkPaths = loadStrings("./images/walk/walk.txt");
+   jumpPaths = loadStrings("./images/walk/jump.txt")
 }
 function createGoodItem(x, y) {
     var goodImage = createSprite(x, y, 'static');
@@ -51,6 +52,7 @@ function setup() {
   myAnimation = new animationImage(200, 200, animationW, animationH, 3);
   myAnimation.loadAnimation('idle', idlePaths);
   myAnimation.loadAnimation('walk', walkPaths);
+  myAnimation.loadAnimation('jump', jumpPaths);
   myAnimation.debug = true;
 // Spawn Good Items, Bad Items, and Collision Items not touching each other or the player
     for(var i = 0; i < numGoodItems; i++)
