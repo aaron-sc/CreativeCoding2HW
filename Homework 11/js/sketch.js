@@ -11,8 +11,9 @@ var badItems = [];
 var numberBadItems = 10;
 var collisionItems = [];
 var numberCollisionItems = 3;
+var collisionItemHealth = 100;
 
-const particles = [];
+var particles = [];
 
 var prevDirection = 0;
 
@@ -40,11 +41,14 @@ function createBadItem(x, y) {
     badImage.diameter = 100;
     return badImage;
 }
-function createCollisionItem(x, y) {
+function createCollisionItem(x, y, health) {
     var collisionImage = createSprite(x, y, 'static');
     collisionImage.img = "./images/rock.png";
     collisionImage.scale = 0.05;
     collisionImage.diameter = 110;
+    collisionImage.health = health;
+    collisionImage.x = x;
+    collisionImage.y = y;
     return collisionImage;
 }
 function setup() {
@@ -66,28 +70,30 @@ function setup() {
         badItems.push(badItem);
     }
     for (var i = 0; i < numberCollisionItems; i++) {
-        var collisionItem = createCollisionItem(random(0, width), random(0, height));
+        var collisionItem = createCollisionItem(random(0, width), random(0, height), collisionItemHealth);
         collisionItems.push(collisionItem);
     }
 
 }
 
 function explode(x, y) {
-    for (let i = 0; i < 5; i++) {
-        let p = new Particle(x, y);
-        particles.push(p);
-
+    for (var i = 0; i < 60; i++) {
+        var particle = new Particle(x, y);
+        particles.push(particle);
     }
-    for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].update();
-        particles[i].show();
-        console.log(particles[i]);
-        if (particles[i].finished()) {
-            // remove this particle
 
+    for (var i = 0; i < particles.length; i++) {
+        particles[i].update();
+    }
+
+    
+    for (var i = 0; i < 60; i++) {
+        particles[i].show();
+        if(particles[i].finished()) {
             particles.splice(i, 1);
         }
     }
+
 }
 function checkCollision(isSlide) {
     myAnimation.currentAnimation.rotationSpeed = 0;
@@ -111,13 +117,23 @@ function checkCollision(isSlide) {
     }
     for (var i = 0; i < collisionItems.length; i++) {
         if (myAnimation.isColliding(collisionItems[i]) && isSlide == true) {
-            explode(collisionItems[i].x, collisionItems[i].y);
+            collisionItems[i].health -= 10;
             myAnimation.drawAnimation('idle');
             myAnimation.updatePosition('idle');
             myAnimation.currentAnimation.velocity.x = 0;
             myAnimation.currentAnimation.velocity.y = 0;
-            collisionItems[i].remove();
-            collisionItems.splice(i, 1);
+            console.log(collisionItems[i].health);
+            if (collisionItems[i].health <= 0) {
+                explode(collisionItems[i].x, collisionItems[i].y);
+                collisionItems[i].remove();
+                collisionItems.splice(i, 1); 
+                // remove all the particles
+                for (var j = 0; j < particles.length; j++) {
+                    if (particles[j].finished()) {
+                        particles.splice(j, 1);
+                    }
+                }
+            }
         }
 
     }

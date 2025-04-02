@@ -17,6 +17,7 @@ class Particle {
       this.y += this.vy;
       this.alpha -= 5;
     }
+
   
     show() {
       noStroke();
