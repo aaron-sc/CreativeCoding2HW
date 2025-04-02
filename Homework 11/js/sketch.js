@@ -10,7 +10,7 @@ var numGoodItems = 10;
 var badItems = [];
 var numberBadItems = 10;
 var collisionItems = [];
-var numberCollisionItems = 3;
+var numberCollisionItems = 5;
 var collisionItemHealth = 100;
 
 var particles = [];
@@ -118,8 +118,8 @@ function checkCollision(isSlide) {
     for (var i = 0; i < collisionItems.length; i++) {
         if (myAnimation.isColliding(collisionItems[i]) && isSlide == true) {
             collisionItems[i].health -= 10;
-            myAnimation.drawAnimation('idle');
-            myAnimation.updatePosition('idle');
+            // myAnimation.drawAnimation('idle');
+            // myAnimation.updatePosition('idle');
             myAnimation.currentAnimation.velocity.x = 0;
             myAnimation.currentAnimation.velocity.y = 0;
             console.log(collisionItems[i].health);
