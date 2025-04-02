@@ -50,7 +50,6 @@ class animationImage {
 
 
     drawAnimation(animationType) {
-
         this.currentAnimation.frameDelay = 5;
         this.currentAnimation.scale = .3;
         this.currentAnimation.width = this.w;
@@ -58,6 +57,7 @@ class animationImage {
         this.currentAnimation.rotation = 0;
         this.currentAnimation.rotationSpeed = 0;
         this.currentAnimation.debug = true;
+        
         this.currentAnimation.changeAnimation(animationType);
         if(animationType == 'idle' && this.direction == 'idle') {
             this.currentAnimation.velocity.x = 0;
@@ -116,11 +116,26 @@ class animationImage {
             this.currentAnimation.speed = this.speed;
 
         }
-        else if (animationType == 'idle') {
+        else if (animationType == 'slide' && this.direction == 'forward') {
             this.currentAnimation.velocity.x = 0;
             this.currentAnimation.velocity.y = 0;
             this.currentAnimation.mirror.x = false;
             this.currentAnimation.direction = 0;
+            this.currentAnimation.speed = 3;
+
+        }
+        else if (animationType == 'slide' && this.direction == 'reverse') {
+            this.currentAnimation.velocity.x = 0;
+            this.currentAnimation.velocity.y = 0;
+            this.currentAnimation.mirror.x = true;
+            this.currentAnimation.direction = 180;
+            this.currentAnimation.speed = 3;
+
+        }
+        else if (animationType == 'idle') {
+            this.currentAnimation.velocity.x = 0;
+            this.currentAnimation.velocity.y = 0;
+            this.currentAnimation.mirror.x = false;
             this.currentAnimation.speed = 0;
 
         }
