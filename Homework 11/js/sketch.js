@@ -45,8 +45,10 @@ function createCollisionItem(x, y, health) {
     var collisionImage = createSprite(x, y, 'static');
     collisionImage.img = "./images/rock.png";
     collisionImage.scale = 0.05;
+    collisionImage.textSize = 20;
     collisionImage.diameter = 110;
     collisionImage.health = health;
+    collisionImage.text = collisionImage.health;
     collisionImage.x = x;
     collisionImage.y = y;
     return collisionImage;
@@ -60,7 +62,9 @@ function setup() {
     myAnimation.loadAnimation('walk', walkPaths);
     myAnimation.loadAnimation('slide', jumpPaths);
     myAnimation.debug = true;
-    // Spawn Good Items, Bad Items, and Collision Items not touching each other or the player
+
+    // Create items and ensure they dont touch each other
+
     for (var i = 0; i < numGoodItems; i++) {
         var goodItem = createGoodItem(random(0, width), random(0, height));
         goodItems.push(goodItem);
@@ -73,6 +77,8 @@ function setup() {
         var collisionItem = createCollisionItem(random(0, width), random(0, height), collisionItemHealth);
         collisionItems.push(collisionItem);
     }
+
+    
 
 }
 
@@ -123,6 +129,7 @@ function checkCollision(isSlide) {
             myAnimation.currentAnimation.velocity.x = 0;
             myAnimation.currentAnimation.velocity.y = 0;
             console.log(collisionItems[i].health);
+            collisionItems[i].text = collisionItems[i].health;
             if (collisionItems[i].health <= 0) {
                 explode(collisionItems[i].x, collisionItems[i].y);
                 collisionItems[i].remove();
@@ -152,14 +159,27 @@ function draw() {
         text('Score: ' + score, width / 2 - 50, height / 2 + 50);
         myAnimation.drawAnimation('idle');
         myAnimation.updatePosition('idle');
+        // Remove all items from the screen
+        for (var i = 0; i < goodItems.length; i++) {
+            goodItems[i].remove();
+        }
+        for (var i = 0; i < badItems.length; i++) {
+            badItems[i].remove();
+        }
+        for (var i = 0; i < collisionItems.length; i++) {
+            collisionItems[i].remove();
+        }
+        noloop();
+        
     }
-    else if (score == numGoodItems) {
+    else if (collisionItems.length == 0) {
         fill(255);
         textSize(32);
         text('You Win!', width / 2 - 50, height / 2);
         text('Score: ' + score, width / 2 - 50, height / 2 + 50);
         myAnimation.drawAnimation('idle');
         myAnimation.updatePosition('idle');
+        noloop();
     }
     if (gameStart) {
         // Display the score and lives

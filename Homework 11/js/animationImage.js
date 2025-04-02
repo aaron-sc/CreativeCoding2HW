@@ -95,25 +95,25 @@ class animationImage {
         else if (animationType == 'walk' && this.direction == 'bottomRight') {
             this.currentAnimation.mirror.x = false;
             this.currentAnimation.direction = 45;
-            this.currentAnimation.speed = this.speed;
+            this.currentAnimation.speed = this.speed + 1;
 
         }
         else if (animationType == 'walk' && this.direction == 'bottomLeft') {
             this.currentAnimation.mirror.x = true;
             this.currentAnimation.direction = 135;
-            this.currentAnimation.speed = this.speed;
+            this.currentAnimation.speed = this.speed + 1;
 
         }
         else if (animationType == 'walk' && this.direction == 'topRight') {
             this.currentAnimation.mirror.x = false;
             this.currentAnimation.direction = 315;
-            this.currentAnimation.speed = this.speed;
+            this.currentAnimation.speed = this.speed + 1; 
 
         }
         else if (animationType == 'walk' && this.direction == 'topLeft') {
             this.currentAnimation.mirror.x = true;
             this.currentAnimation.direction = 225;
-            this.currentAnimation.speed = this.speed;
+            this.currentAnimation.speed = this.speed + 1; 
 
         }
         else if (animationType == 'slide' && this.direction == 'forward') {
@@ -121,7 +121,7 @@ class animationImage {
             this.currentAnimation.velocity.y = 0;
             this.currentAnimation.mirror.x = false;
             this.currentAnimation.direction = 0;
-            this.currentAnimation.speed = 3;
+            this.currentAnimation.speed = 5;
 
         }
         else if (animationType == 'slide' && this.direction == 'reverse') {
@@ -129,7 +129,7 @@ class animationImage {
             this.currentAnimation.velocity.y = 0;
             this.currentAnimation.mirror.x = true;
             this.currentAnimation.direction = 180;
-            this.currentAnimation.speed = 3;
+            this.currentAnimation.speed = 5;
 
         }
         else if (animationType == 'idle') {
