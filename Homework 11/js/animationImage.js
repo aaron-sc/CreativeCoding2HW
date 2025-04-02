@@ -56,7 +56,7 @@ class animationImage {
         this.currentAnimation.height = this.h;
         this.currentAnimation.rotation = 0;
         this.currentAnimation.rotationSpeed = 0;
-        this.currentAnimation.debug = true;
+        // this.currentAnimation.debug = true;
         
         this.currentAnimation.changeAnimation(animationType);
         if(animationType == 'idle' && this.direction == 'idle') {
