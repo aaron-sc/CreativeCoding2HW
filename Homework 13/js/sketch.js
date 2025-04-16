@@ -235,6 +235,7 @@ function checkCollision(isSlide) {
                         particles.splice(j, 1);
                     }
                 }
+                score += 1;
             }
         }
 
