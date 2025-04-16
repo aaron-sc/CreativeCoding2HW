@@ -1,0 +1,10 @@
+./images/slide/Slide__000.png
+./images/slide/Slide__001.png
+./images/slide/Slide__002.png
+./images/slide/Slide__003.png
+./images/slide/Slide__004.png
+./images/slide/Slide__005.png
+./images/slide/Slide__006.png
+./images/slide/Slide__007.png
+./images/slide/Slide__008.png
+./images/slide/Slide__009.png
